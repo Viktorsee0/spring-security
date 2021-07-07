@@ -33,10 +33,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/**").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
-                .antMatchers(HttpMethod.POST,"/api/**").hasAuthority(Role.ADMIN.name())
-                .antMatchers(HttpMethod.DELETE,"/api/**").hasAuthority(Role.ADMIN.name())
+                .antMatchers("/", "/auth/reg").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/**").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
+                .antMatchers(HttpMethod.POST, "/api/**").hasAuthority(Role.ADMIN.name())
+                .antMatchers(HttpMethod.DELETE, "/api/**").hasAuthority(Role.ADMIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -58,12 +58,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    protected PasswordEncoder passwordEncoder(){
+    protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
 
     @Bean
-    protected DaoAuthenticationProvider daoAuthenticationProvider(){
+    protected DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
